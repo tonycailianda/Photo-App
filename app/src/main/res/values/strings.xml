@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Photo App</string>
     <string name="action_settings">Settings</string>
+    <string name="filter_a">Filter A</string>
+    <string name="filter_b">Filter B</string>
+    <string name="function_a">Function A</string>
+    <string name="function_b">Function B</string>
+    <string name="import_text">Import</string>
 </resources>
