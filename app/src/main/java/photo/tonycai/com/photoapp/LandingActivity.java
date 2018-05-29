@@ -29,11 +29,15 @@ public class LandingActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                Intent i = new Intent(
+//                        Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                Intent myIntent = new Intent(LandingActivity.this, OptionSelectionActivity.class);
+                //myIntent.putExtra("key", value); //Optional parameters
+                startActivity(myIntent);
 
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
     }
