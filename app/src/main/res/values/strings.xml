@@ -6,4 +6,7 @@
     <string name="function_a">Function A</string>
     <string name="function_b">Function B</string>
     <string name="import_text">Import</string>
+    <string name="option_selection_activity">Option Selection</string>
+    <string name="after_save_activity">Save Successful!</string>
+    <string name="show_result_activity">Satisfied?</string>
 </resources>
