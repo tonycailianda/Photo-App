@@ -2,6 +2,7 @@ package photo.tonycai.com.photoapp;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
+            Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
+            ImageFilters filters = new ImageFilters();
+            Bitmap afterFilter = filters.applyInvertEffect(imageSource);
             ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            imageView.setImageBitmap(afterFilter);
         }
 
 
