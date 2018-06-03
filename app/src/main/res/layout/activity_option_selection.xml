@@ -5,14 +5,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <Switch
         android:id="@+id/switch_function_b"
         android:layout_width="219dp"
         android:layout_height="56dp"
-        android:layout_marginLeft="83dp"
-        android:layout_marginStart="83dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="28dp"
         android:text="@string/function_b"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +35,9 @@
         android:id="@+id/switch_function_a"
         android:layout_width="221dp"
         android:layout_height="53dp"
-        android:layout_marginLeft="82dp"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="28dp"
         android:text="@string/function_a"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,11 +45,11 @@
 
     <Switch
         android:id="@+id/switch_filter_a"
-        android:layout_width="181dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="102dp"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="267dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="56dp"
         android:text="@string/filter_a"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +57,11 @@
 
     <Switch
         android:id="@+id/switch_filter_b"
-        android:layout_width="181dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="102dp"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="213dp"
+        android:layout_height="46dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="28dp"
         android:text="@string/filter_b"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,11 +71,34 @@
         android:id="@+id/import_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="62dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/import_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <SeekBar
+        android:id="@+id/rotation_seekbar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="170dp"
+        android:layout_height="38dp"
+        android:layout_marginLeft="107dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="28dp"
+        android:max="3"
+        android:progress="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_function_b" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="218dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="107dp"
+        android:layout_marginStart="107dp"
+        android:text="   0          90        180      270"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rotation_seekbar" />
 
 </android.support.constraint.ConstraintLayout>
