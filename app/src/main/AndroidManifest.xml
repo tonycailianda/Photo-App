@@ -39,6 +39,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".SymmetryAdjustmentActivity"
+            android:label="@string/activity_symmetry_adjustment"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

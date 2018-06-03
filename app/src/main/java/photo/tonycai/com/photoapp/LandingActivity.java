@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class LandingActivity extends AppCompatActivity {
@@ -40,8 +41,15 @@ public class LandingActivity extends AppCompatActivity {
 
             }
         });
+        Button button = (Button) findViewById(R.id.goto_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(LandingActivity.this, SymmetryAdjustmentActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
