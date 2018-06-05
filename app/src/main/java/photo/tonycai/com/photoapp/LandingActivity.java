@@ -49,6 +49,15 @@ public class LandingActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        Button dButton = (Button) findViewById(R.id.button_drag);
+        dButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent (LandingActivity.this, DragActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

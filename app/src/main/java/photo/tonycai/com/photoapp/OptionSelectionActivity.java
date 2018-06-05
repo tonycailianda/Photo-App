@@ -82,6 +82,7 @@ public class OptionSelectionActivity extends AppCompatActivity{
 
             SeekBar seekBar = findViewById(R.id.rotation_seekbar);
 
+
             seekBar.setOnSeekBarChangeListener(SeekBarListener);
             Intent myIntent = new Intent(OptionSelectionActivity.this, ShowResultActivity.class);
             myIntent.putExtra("is_filter_a",sa.isChecked()); //Optional parameters
@@ -93,9 +94,9 @@ public class OptionSelectionActivity extends AppCompatActivity{
             startActivityForResult(myIntent,ShowResultActivity);
 //            Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
 //            ImageFilters filters = new ImageFilters();
-//            Bitmap afterFilter = filters.applyInvertEffect(imageSource);
+//            Bitmap mAfterFilter = filters.applyInvertEffect(imageSource);
 //            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//            imageView.setImageBitmap(afterFilter);
+//            imageView.setImageBitmap(mAfterFilter);
         }
 
     }
