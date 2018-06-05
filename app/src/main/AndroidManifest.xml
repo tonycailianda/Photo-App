@@ -40,6 +40,12 @@
         </activity>
 
         <activity
+            android:name=".PagerActivity"
+            android:label="@string/ultra_page"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
             android:name=".SymmetryAdjustmentActivity"
             android:label="@string/activity_symmetry_adjustment"
             android:theme="@style/AppTheme.NoActionBar">

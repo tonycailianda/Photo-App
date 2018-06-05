@@ -54,7 +54,7 @@ public class LandingActivity extends AppCompatActivity {
         dButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent (LandingActivity.this, DragActivity.class);
+                Intent myIntent = new Intent (LandingActivity.this, PagerActivity.class);
                 startActivity(myIntent);
             }
         });
