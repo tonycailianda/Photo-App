@@ -1,25 +1,40 @@
 package photo.tonycai.com.photoapp;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+
 public class LandingActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
+  //  ImageView mImageView = findViewById(R.id.mImageView);
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +60,10 @@ public class LandingActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(LandingActivity.this, SymmetryAdjustmentActivity.class);
+                Intent myIntent = new Intent(LandingActivity.this, PagerActivity.class);
+                //myIntent.putExtra("key", value); //Optional parameters
                 startActivity(myIntent);
+                //dispatchTakePictureIntent();
             }
         });
 
@@ -79,5 +96,18 @@ public class LandingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                Intent myIntent = new Intent(LandingActivity.this,PagerActivity.class);
+                String sourceBit = BitMapToString(imageBitmap);
+                myIntent.putExtra("originalBitmap",sourceBit); //Optional parameters
+                startActivityForResult(myIntent,REQUEST_IMAGE_CAPTURE);
+                //mImageView.setImageBitmap(imageBitmap);
+                //Intent myIntent = new Intent(LandingActivity.this, ShowResultActivity.class);
+            }
     }
 }
