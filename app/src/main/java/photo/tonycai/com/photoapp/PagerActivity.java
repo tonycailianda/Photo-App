@@ -12,18 +12,29 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.tmall.ultraviewpager.UltraViewPager;
 import com.tmall.ultraviewpager.transformer.UltraDepthScaleTransformer;
 
+import java.io.ByteArrayOutputStream;
+
 public class PagerActivity extends AppCompatActivity implements View.OnClickListener{
 
    final int REQUEST_IMAGE_CAPTURE = 1;
 
+   Bitmap bit;
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] imgBytes = baos.toByteArray();// 转为byte数组
+        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
+    }
 
     void updatePager (Bitmap b)
     {
@@ -78,6 +89,7 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pager);
             dispatchTakePictureIntent();
+
 //        Intent intent = getIntent();
 //        String originStrBit = intent.getStringExtra("originBitmap");
 //        mBit = originStrBit;
@@ -95,15 +107,45 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
             //ImageView a1 = findViewById(R.id.Auto1);
             //ImageView a2 = findViewById(R.id.Auto2);
             updatePager((Bitmap) data.getExtras().get("data"));
+            Button button = (Button) findViewById(R.id.no_satisfied);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
+                        myIntent.putExtra("where","Pager");
+                        myIntent.putExtra("bitmap","");
+                        startActivity(myIntent);
+                }
+            });
+
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent myIntent = new Intent(PagerActivity.this, ShowResultActivity.class);
+//                    myIntent.putExtra("From Pager",true);
+//                    startActivity(myIntent);
+//                }
+//            });
         }
     }
 
     @Override
     public void onClick(View v) {
         ImageView img = v.findViewById(R.id.pager_imageview);
-        BitmapDrawable d = (BitmapDrawable) img.getDrawable();
-        MediaStore.Images.Media.insertImage(getContentResolver(), d.getBitmap(), "title", "description");
-        Intent myIntent = new Intent(PagerActivity.this, AfterSaveActivity.class);
-        startActivityForResult(myIntent,RESULT_OK);
+        //int position = Integer.parseInt(String.valueOf(v.getTag()));
+        //Log.v(String, position + "");
+//        if (position!=4)
+//        {
+            //Intent myIntent = new Intent(PagerActivity.this, ExtraAdding.class);
+            //startActivityForResult(myIntent,RESULT_OK);
+//        }
+//        else
+//        {
+            BitmapDrawable d = (BitmapDrawable) img.getDrawable();
+            MediaStore.Images.Media.insertImage(getContentResolver(), d.getBitmap(), "title", "description");
+            Intent myIntent = new Intent(PagerActivity.this, AfterSaveActivity.class);
+            startActivityForResult(myIntent,RESULT_OK);
+//        }
     }
+
 }
