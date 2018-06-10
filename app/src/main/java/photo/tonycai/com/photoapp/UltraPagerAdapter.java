@@ -27,22 +27,44 @@ package photo.tonycai.com.photoapp;
  */
 
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import static android.content.Intent.getIntent;
+import static android.content.Intent.getIntentOld;
 
 /**
  * Created by mikeafc on 15/11/26.
  */
 public class UltraPagerAdapter extends PagerAdapter {
-    private boolean isMultiScr;
+    private OnClickListener mOnclickListener;
 
-    public UltraPagerAdapter(boolean isMultiScr) {
+//    public abstract class Delegate {
+//        public abstract void onClick(View v, int index);
+//    }
+//    private Delegate mDelegate;
+    private boolean isMultiScr;
+    private Bitmap mBitmap;
+    private Resources mResources;
+
+    public UltraPagerAdapter(boolean isMultiScr, Bitmap bitmap , Resources resources, OnClickListener l) {
         this.isMultiScr = isMultiScr;
+        mBitmap = bitmap;
+        mResources = resources;
+        mOnclickListener = l;
     }
 
     @Override
@@ -56,30 +78,52 @@ public class UltraPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.layout_child, null);
         //new LinearLayout(container.getContext());
-        TextView textView = (TextView) linearLayout.findViewById(R.id.pager_textview);
-        textView.setText(position + "");
+       //T extView textView = (TextView) linearLayout.findViewById(R.id.pager_imageview);
+       // textView.setText(position + "");
         linearLayout.setId(R.id.item_id);
+        //Intent intent = getIntent();
+        //textView.setOnClickListener(new OnClickListener);
+
+        Bitmap comBitmap=mBitmap;
+        ImageFilters filter = new ImageFilters();
         switch (position) {
             case 0:
+                comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 break;
             case 1:
+                comBitmap = filter.applyBlackFilter(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#673AB7"));
                 break;
             case 2:
+                comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#009688"));
                 break;
             case 3:
+                comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#607D8B"));
                 break;
             case 4:
+                comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#F44336"));
                 break;
+
+
         }
+        ImageView img = linearLayout.findViewById(R.id.pager_imageview);
+        Drawable d = new BitmapDrawable(mResources, comBitmap);
+        img.setImageDrawable(d);
         container.addView(linearLayout);
+//        linearLayout.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mDelegate.onClick(v, position);
+//            }
+//        });
+        linearLayout.setOnClickListener(mOnclickListener);
 //        linearLayout.getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, container.getContext().getResources().getDisplayMetrics());
 //        linearLayout.getLayoutParams().height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, container.getContext().getResources().getDisplayMetrics());
         return linearLayout;
