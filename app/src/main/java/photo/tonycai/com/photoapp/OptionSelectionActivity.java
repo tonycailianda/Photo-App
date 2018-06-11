@@ -48,6 +48,10 @@ public class OptionSelectionActivity extends AppCompatActivity{
                 myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
                 myIntent.putExtra("picByte", getIntent().getByteArrayExtra("bitmap")); //Optional parameters
                 myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
+
+                //Intent myIntent2 = new Intent(OptionSelectionActivity.this, SymmetryAdjustmentActivity.class);
+
+
                 startActivityForResult(myIntent,ShowResultActivity);
             }
         });

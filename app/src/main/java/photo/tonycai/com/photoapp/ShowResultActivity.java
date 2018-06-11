@@ -258,7 +258,7 @@ public class ShowResultActivity extends AppCompatActivity {
 
         if (getIntent().getBooleanExtra("is_function_a", false)) {
             Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);
-            myIntent.putExtra("bitmapURL",getIntent().getStringExtra("picPath"));
+            myIntent.putExtra("byteBit" , getIntent().getByteArrayExtra("picByte"));
             startActivityForResult(myIntent, SYMMETRY_ADJUSTMENT_ACTIVITY);
             //showImage();
         } else {
