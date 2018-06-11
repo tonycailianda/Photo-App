@@ -13,4 +13,5 @@
     <string name="save_successful">Save Successful!!</string>
     <string name="activity_symmetry_adjustment">Choose Symmetry Axis</string>
     <string name="ultra_page">Ultra Page</string>
+    <string name="continue_button">Continue</string>
 </resources>

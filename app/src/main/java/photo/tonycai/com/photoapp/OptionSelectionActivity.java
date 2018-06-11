@@ -26,14 +26,29 @@ public class OptionSelectionActivity extends AppCompatActivity{
         setContentView(R.layout.activity_option_selection);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Button button = (Button) findViewById(R.id.import_button);
+        String fromWhere = getIntent().getStringExtra("where");
+        final Button button = (Button) findViewById(R.id.import_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                //button.setText("rale");
+                String picturePath = "";
+                Switch sa = (Switch) findViewById(R.id.switch_filter_a);
+                Switch sb = (Switch) findViewById(R.id.switch_filter_b);
+                Switch sc = (Switch) findViewById(R.id.switch_function_a);
+                Switch sd = (Switch) findViewById(R.id.switch_function_b);
+
+                SeekBar seekBar = findViewById(R.id.rotation_seekbar);
+
+                seekBar.setOnSeekBarChangeListener(SeekBarListener);
+                Intent myIntent = new Intent(OptionSelectionActivity.this, ShowResultActivity.class);
+                myIntent.putExtra("is_filter_a",sa.isChecked()); //Optional parameters
+                myIntent.putExtra("is_filter_b", sb.isChecked()); //Optional parameters
+                myIntent.putExtra("is_function_a", sc.isChecked()); //Optional parameters
+                myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
+                myIntent.putExtra("picByte", getIntent().getByteArrayExtra("bitmap")); //Optional parameters
+                myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
+                startActivityForResult(myIntent,ShowResultActivity);
             }
         });
 
@@ -59,47 +74,48 @@ public class OptionSelectionActivity extends AppCompatActivity{
             // TODO Auto-generated method stub
         }
     };
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            Switch sa = (Switch) findViewById(R.id.switch_filter_a);
-            Switch sb = (Switch) findViewById(R.id.switch_filter_b);
-            Switch sc = (Switch) findViewById(R.id.switch_function_a);
-            Switch sd = (Switch) findViewById(R.id.switch_function_b);
-
-            SeekBar seekBar = findViewById(R.id.rotation_seekbar);
-
-
-            seekBar.setOnSeekBarChangeListener(SeekBarListener);
-            Intent myIntent = new Intent(OptionSelectionActivity.this, ShowResultActivity.class);
-            myIntent.putExtra("is_filter_a",sa.isChecked()); //Optional parameters
-            myIntent.putExtra("is_filter_b", sb.isChecked()); //Optional parameters
-            myIntent.putExtra("is_function_a", sc.isChecked()); //Optional parameters
-            myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
-            myIntent.putExtra("picPath", picturePath); //Optional parameters
-            myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
-            startActivityForResult(myIntent,ShowResultActivity);
-//            Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
-//            ImageFilters filters = new ImageFilters();
-//            Bitmap mAfterFilter = filters.applyInvertEffect(imageSource);
-//            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//            imageView.setImageBitmap(mAfterFilter);
-        }
+//    @Override
+//    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+////            Uri selectedImage = data.getData();
+////            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+////
+////            Cursor cursor = getContentResolver().query(selectedImage,
+////                    filePathColumn, null, null, null);
+////            cursor.moveToFirst();
+////
+////            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+////            String picturePath = cursor.getString(columnIndex);
+//            String picturePath = "";
+////            cursor.close();
+//
+//            Switch sa = (Switch) findViewById(R.id.switch_filter_a);
+//            Switch sb = (Switch) findViewById(R.id.switch_filter_b);
+//            Switch sc = (Switch) findViewById(R.id.switch_function_a);
+//            Switch sd = (Switch) findViewById(R.id.switch_function_b);
+//
+//            SeekBar seekBar = findViewById(R.id.rotation_seekbar);
+//
+//
+//            seekBar.setOnSeekBarChangeListener(SeekBarListener);
+//            Intent myIntent = new Intent(OptionSelectionActivity.this, ShowResultActivity.class);
+//            myIntent.putExtra("is_filter_a",sa.isChecked()); //Optional parameters
+//            myIntent.putExtra("is_filter_b", sb.isChecked()); //Optional parameters
+//            myIntent.putExtra("is_function_a", sc.isChecked()); //Optional parameters
+//            myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
+//            myIntent.putExtra("picPath", picturePath); //Optional parameters
+//            myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
+//            startActivityForResult(myIntent,ShowResultActivity);
+////            Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
+////            ImageFilters filters = new ImageFilters();
+////            Bitmap mAfterFilter = filters.applyInvertEffect(imageSource);
+////            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+////            imageView.setImageBitmap(mAfterFilter);
+//        }
 
     }
 
 
-}
+

@@ -57,6 +57,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ExtraAdding"
+            android:label="@string/activity_symmetry_adjustment"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
 
     </application>
     <uses-feature android:name="android.hardware.camera"

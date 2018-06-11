@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import com.tmall.ultraviewpager.UltraViewPager;
 import com.tmall.ultraviewpager.transformer.UltraDepthScaleTransformer;
@@ -29,16 +31,32 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
    final int REQUEST_IMAGE_CAPTURE = 1;
 
    Bitmap bit;
-    public static String bitmapToString(Bitmap bitmap) {
+    public static byte[] bitmapToByte(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] imgBytes = baos.toByteArray();// 转为byte数组
-        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
+        return baos.toByteArray();// 转为byte数组
     }
 
-    void updatePager (Bitmap b)
+    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
+
+    void updatePager (Bitmap b, int times)
     {
-        PagerAdapter adapter = new UltraPagerAdapter(false, b, getResources(), this);
+        PagerAdapter adapter = new UltraPagerAdapter(false, b, getResources(), this, times);
         UltraViewPager ultraViewPager = (UltraViewPager)findViewById(R.id.ultra_viewpager);
         ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
 //UltraPagerAdapter 绑定子view到UltraViewPager
@@ -88,6 +106,9 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pager);
+        //String a = getResources().getString(R.string.a);
+        //String b = Integer  .format(a, 2011);
+        //String b = String.format(getResources().getString(R.string.a),"Pager");
             dispatchTakePictureIntent();
 
 //        Intent intent = getIntent();
@@ -101,19 +122,27 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
 
 
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             //ImageView a1 = findViewById(R.id.Auto1);
             //ImageView a2 = findViewById(R.id.Auto2);
-            updatePager((Bitmap) data.getExtras().get("data"));
+            updatePager((Bitmap) data.getExtras().get("data"),1);
+            bit = (Bitmap) data.getExtras().get("data");
+            bit = getResizedBitmap(bit,1024,1024);
+            SeekBar seekBar = findViewById(R.id.seekBarA);
+            seekBar.setOnSeekBarChangeListener(SeekBarListener);
+            //final String str = bitmapToString(bit);
             Button button = (Button) findViewById(R.id.no_satisfied);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                        //Intent myIntent2 = new Intent(PagerActivity.this, ShowResultActivity.class);
                         Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
                         myIntent.putExtra("where","Pager");
-                        myIntent.putExtra("bitmap","");
+                        myIntent.putExtra("bitmap",bitmapToByte(bit));
                         startActivity(myIntent);
                 }
             });
@@ -128,6 +157,28 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
 //            });
         }
     }
+
+    SeekBar.OnSeekBarChangeListener SeekBarListener = new SeekBar.OnSeekBarChangeListener()
+    {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress,
+                                      boolean fromUser) {
+            // TODO Auto-generated method stub
+            updatePager(bit,progress+1);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // TODO Auto-generated method stub
+        }
+    };
 
     @Override
     public void onClick(View v) {

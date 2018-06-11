@@ -59,12 +59,14 @@ public class UltraPagerAdapter extends PagerAdapter {
     private boolean isMultiScr;
     private Bitmap mBitmap;
     private Resources mResources;
+    private int mTimes;
 
-    public UltraPagerAdapter(boolean isMultiScr, Bitmap bitmap , Resources resources, OnClickListener l) {
+    public UltraPagerAdapter(boolean isMultiScr, Bitmap bitmap , Resources resources, OnClickListener l ,int time) {
         this.isMultiScr = isMultiScr;
         mBitmap = bitmap;
         mResources = resources;
         mOnclickListener = l;
+        mTimes = time;
     }
 
     @Override
@@ -91,31 +93,56 @@ public class UltraPagerAdapter extends PagerAdapter {
         ImageFilters filter = new ImageFilters();
         switch (position) {
             case 0:
+                for (int i=1;i<=mTimes;i++)
                 comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
+                linearLayout.setOnClickListener(mOnclickListener);
+                ImageView img = linearLayout.findViewById(R.id.pager_imageview);
+                Drawable d = new BitmapDrawable(mResources, comBitmap);
+                img.setImageDrawable(d);
                 break;
             case 1:
-                comBitmap = filter.applyBlackFilter(comBitmap);
+                for (int i=1;i<=mTimes;i++)
+                comBitmap = filter.applyHighlightEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#673AB7"));
+                linearLayout.setOnClickListener(mOnclickListener);
+                img = linearLayout.findViewById(R.id.pager_imageview);
+                d = new BitmapDrawable(mResources, comBitmap);
+                img.setImageDrawable(d);
                 break;
             case 2:
-                comBitmap = filter.applyEmbossEffect(comBitmap);
+                for (int i=1;i<=mTimes;i++)
+                comBitmap = filter.applyMeanRemovalEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#009688"));
+                linearLayout.setOnClickListener(mOnclickListener);
+                img = linearLayout.findViewById(R.id.pager_imageview);
+                d = new BitmapDrawable(mResources, comBitmap);
+                img.setImageDrawable(d);
                 break;
             case 3:
-                comBitmap = filter.applyEmbossEffect(comBitmap);
+                for (int i=1;i<=mTimes;i++)
+                comBitmap = filter.applySnowEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#607D8B"));
+                linearLayout.setOnClickListener(mOnclickListener);
+                img = linearLayout.findViewById(R.id.pager_imageview);
+                d = new BitmapDrawable(mResources, comBitmap);
+                img.setImageDrawable(d);
                 break;
             case 4:
-                comBitmap = filter.applyEmbossEffect(comBitmap);
+                for (int i=1;i<=mTimes;i++)
+                    comBitmap = filter.applyFleaEffect(comBitmap);
+                //comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#F44336"));
+                linearLayout.setOnClickListener(mOnclickListener);
+                img = linearLayout.findViewById(R.id.pager_imageview);
+                d = new BitmapDrawable(mResources, comBitmap);
+                img.setImageDrawable(d);
+                //linearLayout.setTag((int) 5);
+                //linearLayout.setT
                 break;
 
 
         }
-        ImageView img = linearLayout.findViewById(R.id.pager_imageview);
-        Drawable d = new BitmapDrawable(mResources, comBitmap);
-        img.setImageDrawable(d);
         container.addView(linearLayout);
 //        linearLayout.setOnClickListener(new OnClickListener() {
 //            @Override
@@ -123,7 +150,6 @@ public class UltraPagerAdapter extends PagerAdapter {
 //                mDelegate.onClick(v, position);
 //            }
 //        });
-        linearLayout.setOnClickListener(mOnclickListener);
 //        linearLayout.getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, container.getContext().getResources().getDisplayMetrics());
 //        linearLayout.getLayoutParams().height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, container.getContext().getResources().getDisplayMetrics());
         return linearLayout;

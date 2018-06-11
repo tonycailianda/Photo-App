@@ -190,13 +190,15 @@ public class ShowResultActivity extends AppCompatActivity {
 
     private void showImage() {
         Intent intent = getIntent();
-        String picturePath = intent.getStringExtra("picPath");
+        byte[] pictureByte = intent.getByteArrayExtra("picByte");
+                //intent.getStringExtra("picPath");
         Boolean filter_a_info = intent.getBooleanExtra("is_filter_a", true);
         Boolean filter_b_info = intent.getBooleanExtra("is_filter_b", true);
         Boolean function_a_info = intent.getBooleanExtra("is_function_a", true);
         Boolean function_b_info = intent.getBooleanExtra("is_function_b", true);
         int rotation_angle = intent.getIntExtra("rotation_angle", 6);
-        Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
+        //Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
+        Bitmap imageSource = BitmapFactory.decodeByteArray(pictureByte, 0, pictureByte.length);
         ImageFilters filters = new ImageFilters();
         mAfterFilter = imageSource;
         Bitmap afterSymmetry = imageSource;

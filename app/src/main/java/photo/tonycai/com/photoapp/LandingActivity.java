@@ -41,21 +41,21 @@ public class LandingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent i = new Intent(
-////                        Intent.ACTION_PICK,
-////                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+       // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Intent i = new Intent(
+//////                        Intent.ACTION_PICK,
+//////                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+////
+////                startActivityForResult(i, RESULT_LOAD_IMAGE);
+//                Intent myIntent = new Intent(LandingActivity.this, OptionSelectionActivity.class);
+//                //myIntent.putExtra("key", value); //Optional parameters
+//                startActivity(myIntent);
 //
-//                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                Intent myIntent = new Intent(LandingActivity.this, OptionSelectionActivity.class);
-                //myIntent.putExtra("key", value); //Optional parameters
-                startActivity(myIntent);
-
-            }
-        });
+//            }
+//        });
         Button button = (Button) findViewById(R.id.goto_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,14 +67,14 @@ public class LandingActivity extends AppCompatActivity {
             }
         });
 
-        Button dButton = (Button) findViewById(R.id.button_drag);
-        dButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent (LandingActivity.this, PagerActivity.class);
-                startActivity(myIntent);
-            }
-        });
+        //Button dButton = (Button) findViewById(R.id.button_drag);
+//        dButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent (LandingActivity.this, PagerActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

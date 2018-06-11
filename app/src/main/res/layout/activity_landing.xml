@@ -30,11 +30,6 @@
         tools:context=".LandingActivity"
         tools:showIn="@layout/activity_landing">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <Button
             android:id="@+id/goto_button"
             android:layout_width="wrap_content"
@@ -46,37 +41,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_drag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
-            android:layout_marginLeft="148dp"
-            android:layout_marginStart="148dp"
-            android:text="Button"
-            app:layout_constraintBottom_toTopOf="@+id/goto_button"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/mImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="101dp"
-            android:layout_marginStart="101dp"
-            android:layout_marginTop="52dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/alert_dark_frame" />
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@+id/constraintLayout"
-        app:layout_anchorGravity="right|bottom"
-        app:srcCompat="@android:drawable/ic_lock_power_off" />
-
-    </android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>

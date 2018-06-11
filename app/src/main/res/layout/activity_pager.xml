@@ -7,5 +7,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray" >
+
+        <SeekBar
+            android:id="@+id/seekBarA"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="77dp"
+            android:max="2"
+            android:progress="0" />
+
+        <Button
+            android:id="@+id/no_satisfied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/seekBarA"
+            android:layout_centerHorizontal="true"
+            android:text="Button" />
+
+    </com.tmall.ultraviewpager.UltraViewPager>
 </android.support.constraint.ConstraintLayout>
