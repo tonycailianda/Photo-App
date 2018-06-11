@@ -1,12 +1,14 @@
 package photo.tonycai.com.photoapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -31,6 +33,8 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
    final int REQUEST_IMAGE_CAPTURE = 1;
 
    Bitmap bit;
+    private int SELECT_IMAGE=1;
+
     public static byte[] bitmapToByte(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -109,7 +113,21 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
         //String a = getResources().getString(R.string.a);
         //String b = Integer  .format(a, 2011);
         //String b = String.format(getResources().getString(R.string.a),"Pager");
+        int whereFrom = getIntent().getIntExtra("from",0);
+        if (whereFrom==1)
+        {
             dispatchTakePictureIntent();
+        }
+        else
+        {
+            if (whereFrom==2)
+            {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                final int ACTIVITY_SELECT_IMAGE = 1234;
+                startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+            }
+        }
 
 //        Intent intent = getIntent();
 //        String originStrBit = intent.getStringExtra("originBitmap");
@@ -129,9 +147,34 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             //ImageView a1 = findViewById(R.id.Auto1);
             //ImageView a2 = findViewById(R.id.Auto2);
-            updatePager((Bitmap) data.getExtras().get("data"),1);
+
             bit = (Bitmap) data.getExtras().get("data");
             bit = getResizedBitmap(bit,1024,1024);
+
+        }
+
+            switch(requestCode) {
+                case 1234:
+                    if(resultCode == RESULT_OK){
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        String filePath = cursor.getString(columnIndex);
+                        cursor.close();
+
+
+                       bit = BitmapFactory.decodeFile(filePath);
+                       bit = getResizedBitmap(bit,1024,1024);
+                        /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
+                    }
+            }
+
+            updatePager(bit,1);
+
             SeekBar seekBar = findViewById(R.id.seekBarA);
             seekBar.setOnSeekBarChangeListener(SeekBarListener);
             //final String str = bitmapToString(bit);
@@ -139,11 +182,11 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        //Intent myIntent2 = new Intent(PagerActivity.this, ShowResultActivity.class);
-                        Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
-                        myIntent.putExtra("where","Pager");
-                        myIntent.putExtra("bitmap",bitmapToByte(bit));
-                        startActivity(myIntent);
+                    //Intent myIntent2 = new Intent(PagerActivity.this, ShowResultActivity.class);
+                    Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
+                    myIntent.putExtra("where","Pager");
+                    myIntent.putExtra("bitmap",bitmapToByte(bit));
+                    startActivity(myIntent);
                 }
             });
 
@@ -155,7 +198,6 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
 //                    startActivity(myIntent);
 //                }
 //            });
-        }
     }
 
     SeekBar.OnSeekBarChangeListener SeekBarListener = new SeekBar.OnSeekBarChangeListener()
