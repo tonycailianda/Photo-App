@@ -3,6 +3,8 @@
     package="photo.tonycai.com.photoapp">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -63,6 +65,13 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+
+        <activity
+            android:name="com.yanzhenjie.album.AlbumActivity"
+            android:label="Album"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
 
     </application>
     <uses-feature android:name="android.hardware.camera"

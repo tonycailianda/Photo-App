@@ -24,7 +24,17 @@ public class SymmetryAdjustmentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symmetry_adjustment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out_right);
+            }
+        });
         Drawable bitmapDraw = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("byteBit"), 0, getIntent().getByteArrayExtra("byteBit").length));
         ImageView imageView = (ImageView) findViewById(R.id.imageViewSymmetry);
         imageView.setImageDrawable(bitmapDraw);

@@ -1,10 +1,14 @@
 package photo.tonycai.com.photoapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -14,12 +18,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.yanzhenjie.album.Album;
+
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public class LandingActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
   //  ImageView mImageView = findViewById(R.id.mImageView);
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private int ACTIVITY_REQUEST_SELECT_PHOTO =1;
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
@@ -28,6 +36,8 @@ public class LandingActivity extends AppCompatActivity {
         String temp= Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
+
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -40,7 +50,17 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out_right);
+            }
+        });
        // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -62,8 +82,19 @@ public class LandingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(LandingActivity.this, PagerActivity.class);
                 //myIntent.putExtra("key", value); //Optional parameters
+                myIntent.putExtra("from",1);
                 startActivity(myIntent);
                 //dispatchTakePictureIntent();
+            }
+        });
+
+        Button button2 = (Button) findViewById(R.id.goto_button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(LandingActivity.this, PagerActivity.class);
+                myIntent.putExtra("from",2);
+                startActivity(myIntent);
             }
         });
 
@@ -99,15 +130,8 @@ public class LandingActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                Intent myIntent = new Intent(LandingActivity.this,PagerActivity.class);
-                String sourceBit = BitMapToString(imageBitmap);
-                myIntent.putExtra("originalBitmap",sourceBit); //Optional parameters
-                startActivityForResult(myIntent,REQUEST_IMAGE_CAPTURE);
-                //mImageView.setImageBitmap(imageBitmap);
-                //Intent myIntent = new Intent(LandingActivity.this, ShowResultActivity.class);
-            }
+        super.onActivityResult(requestCode, resultCode, data);
+
+        }
     }
-}
+

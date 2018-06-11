@@ -152,7 +152,6 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
             bit = getResizedBitmap(bit,1024,1024);
 
         }
-
             switch(requestCode) {
                 case 1234:
                     if(resultCode == RESULT_OK){
@@ -167,8 +166,8 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
                         cursor.close();
 
 
-                       bit = BitmapFactory.decodeFile(filePath);
-                       bit = getResizedBitmap(bit,1024,1024);
+                        bit = BitmapFactory.decodeFile(filePath);
+                        bit = getResizedBitmap(bit,1024,1024);
                         /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
                     }
             }
@@ -190,6 +189,15 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
                 }
             });
 
+            if (resultCode == RESULT_CANCELED) {
+                Intent myIntent = new Intent(PagerActivity.this, LandingActivity.class);
+                startActivity(myIntent);
+            }
+
+        }
+
+
+
 //            button.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -198,7 +206,7 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
 //                    startActivity(myIntent);
 //                }
 //            });
-    }
+
 
     SeekBar.OnSeekBarChangeListener SeekBarListener = new SeekBar.OnSeekBarChangeListener()
     {

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
         <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@mipmap/background"
             tools:context=".LandingActivity">
 
-            <android.support.design.widget.AppBarLayout
+
+             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.AppBarOverlay">
@@ -31,16 +34,37 @@
         tools:showIn="@layout/activity_landing">
 
         <Button
-            android:id="@+id/goto_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="83dp"
-            android:layout_marginStart="83dp"
-            android:layout_marginTop="231dp"
-            android:text="Do Not Press This Button!"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/goto_button2"
+            android:layout_width="165dp"
 
+            android:layout_height="66dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            android:text="Edit The Existed Photo"
+            android:textSize="10sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goto_button" />
+
+        <Button
+            android:id="@+id/goto_button"
+            android:layout_width="167dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="143dp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            android:text="Take The Picture Now"
+            android:textSize="10sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -196,6 +196,8 @@ public class ShowResultActivity extends AppCompatActivity {
         Boolean filter_b_info = intent.getBooleanExtra("is_filter_b", true);
         Boolean function_a_info = intent.getBooleanExtra("is_function_a", true);
         Boolean function_b_info = intent.getBooleanExtra("is_function_b", true);
+        Boolean function_c_info = intent.getBooleanExtra("is_function_c", true);
+        Boolean filter_c_info = intent.getBooleanExtra("is_filter_c", true);
         int rotation_angle = intent.getIntExtra("rotation_angle", 6);
         //Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
         Bitmap imageSource = BitmapFactory.decodeByteArray(pictureByte, 0, pictureByte.length);
@@ -254,7 +256,17 @@ public class ShowResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_result);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out_right);
+            }
+        });
 
         if (getIntent().getBooleanExtra("is_function_a", false)) {
             Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);

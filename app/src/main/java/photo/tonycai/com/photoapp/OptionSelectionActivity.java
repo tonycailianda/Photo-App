@@ -25,7 +25,17 @@ public class OptionSelectionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option_selection);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);setSupportActionBar(toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                onBackPressed();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out_right);
+            }
+        });
         String fromWhere = getIntent().getStringExtra("where");
         final Button button = (Button) findViewById(R.id.import_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +47,8 @@ public class OptionSelectionActivity extends AppCompatActivity{
                 Switch sb = (Switch) findViewById(R.id.switch_filter_b);
                 Switch sc = (Switch) findViewById(R.id.switch_function_a);
                 Switch sd = (Switch) findViewById(R.id.switch_function_b);
+                Switch se = (Switch) findViewById(R.id.switch_function_c);
+                Switch sf = (Switch) findViewById(R.id.switch_filter_c);
 
                 SeekBar seekBar = findViewById(R.id.rotation_seekbar);
 
@@ -46,6 +58,8 @@ public class OptionSelectionActivity extends AppCompatActivity{
                 myIntent.putExtra("is_filter_b", sb.isChecked()); //Optional parameters
                 myIntent.putExtra("is_function_a", sc.isChecked()); //Optional parameters
                 myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
+                myIntent.putExtra("is_function_c", se.isChecked()); //Optional parameters
+                myIntent.putExtra("is_filter_c", sf.isChecked()); //Optional parameters
                 myIntent.putExtra("picByte", getIntent().getByteArrayExtra("bitmap")); //Optional parameters
                 myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
 

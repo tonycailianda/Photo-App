@@ -103,7 +103,10 @@ public class UltraPagerAdapter extends PagerAdapter {
                 break;
             case 1:
                 for (int i=1;i<=mTimes;i++)
-                comBitmap = filter.applyHighlightEffect(comBitmap);
+                {
+                    comBitmap = filter.applyHighlightEffect(comBitmap);
+                }
+
                 linearLayout.setBackgroundColor(Color.parseColor("#673AB7"));
                 linearLayout.setOnClickListener(mOnclickListener);
                 img = linearLayout.findViewById(R.id.pager_imageview);
