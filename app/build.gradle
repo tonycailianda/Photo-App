@@ -30,6 +30,7 @@ dependencies {
     compile ('com.alibaba.android:ultraviewpager:1.0.7.7@aar') {
         transitive = true
     }
+    compile 'net.alhazmy13.ImageFilters:library:0.1.2-beta'
     compile 'com.yanzhenjie:album:1.0.0'
 }
 

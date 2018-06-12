@@ -43,6 +43,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.alhazmy13.imagefilter.ImageFilter;
+
 import static android.content.Intent.getIntent;
 import static android.content.Intent.getIntentOld;
 
@@ -94,7 +96,7 @@ public class UltraPagerAdapter extends PagerAdapter {
         switch (position) {
             case 0:
                 for (int i=1;i<=mTimes;i++)
-                comBitmap = filter.applyEmbossEffect(comBitmap);
+                comBitmap = ImageFilter.applyFilter(comBitmap,ImageFilter.Filter.SOFT_GLOW);
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 linearLayout.setOnClickListener(mOnclickListener);
                 ImageView img = linearLayout.findViewById(R.id.pager_imageview);
@@ -104,7 +106,7 @@ public class UltraPagerAdapter extends PagerAdapter {
             case 1:
                 for (int i=1;i<=mTimes;i++)
                 {
-                    comBitmap = filter.applyHighlightEffect(comBitmap);
+                    comBitmap = ImageFilter.applyFilter(comBitmap,ImageFilter.Filter.SKETCH);
                 }
 
                 linearLayout.setBackgroundColor(Color.parseColor("#673AB7"));
@@ -115,7 +117,7 @@ public class UltraPagerAdapter extends PagerAdapter {
                 break;
             case 2:
                 for (int i=1;i<=mTimes;i++)
-                comBitmap = filter.applyMeanRemovalEffect(comBitmap);
+                comBitmap = ImageFilter.applyFilter(comBitmap,ImageFilter.Filter.OLD);
                 linearLayout.setBackgroundColor(Color.parseColor("#009688"));
                 linearLayout.setOnClickListener(mOnclickListener);
                 img = linearLayout.findViewById(R.id.pager_imageview);
@@ -124,7 +126,7 @@ public class UltraPagerAdapter extends PagerAdapter {
                 break;
             case 3:
                 for (int i=1;i<=mTimes;i++)
-                comBitmap = filter.applySnowEffect(comBitmap);
+                comBitmap = ImageFilter.applyFilter(comBitmap,ImageFilter.Filter.INVERT);
                 linearLayout.setBackgroundColor(Color.parseColor("#607D8B"));
                 linearLayout.setOnClickListener(mOnclickListener);
                 img = linearLayout.findViewById(R.id.pager_imageview);
@@ -133,7 +135,7 @@ public class UltraPagerAdapter extends PagerAdapter {
                 break;
             case 4:
                 for (int i=1;i<=mTimes;i++)
-                    comBitmap = filter.applyFleaEffect(comBitmap);
+                    comBitmap = ImageFilter.applyFilter(comBitmap,ImageFilter.Filter.LOMO);
                 //comBitmap = filter.applyEmbossEffect(comBitmap);
                 linearLayout.setBackgroundColor(Color.parseColor("#F44336"));
                 linearLayout.setOnClickListener(mOnclickListener);

@@ -144,57 +144,53 @@ public class PagerActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            //ImageView a1 = findViewById(R.id.Auto1);
-            //ImageView a2 = findViewById(R.id.Auto2);
-
-            bit = (Bitmap) data.getExtras().get("data");
-            bit = getResizedBitmap(bit,1024,1024);
-
-        }
-            switch(requestCode) {
-                case 1234:
-                    if(resultCode == RESULT_OK){
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                        Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                        cursor.moveToFirst();
-
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        String filePath = cursor.getString(columnIndex);
-                        cursor.close();
-
-
-                        bit = BitmapFactory.decodeFile(filePath);
-                        bit = getResizedBitmap(bit,1024,1024);
-                        /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
-                    }
-            }
-
-            updatePager(bit,1);
-
-            SeekBar seekBar = findViewById(R.id.seekBarA);
-            seekBar.setOnSeekBarChangeListener(SeekBarListener);
-            //final String str = bitmapToString(bit);
-            Button button = (Button) findViewById(R.id.no_satisfied);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Intent myIntent2 = new Intent(PagerActivity.this, ShowResultActivity.class);
-                    Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
-                    myIntent.putExtra("where","Pager");
-                    myIntent.putExtra("bitmap",bitmapToByte(bit));
-                    startActivity(myIntent);
+        switch(requestCode) {
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    bit = (Bitmap) data.getExtras().get("data");
+                    bit = getResizedBitmap(bit,1024,1024);
                 }
-            });
+                break;
+            case 1234:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            if (resultCode == RESULT_CANCELED) {
-                Intent myIntent = new Intent(PagerActivity.this, LandingActivity.class);
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    bit = BitmapFactory.decodeFile(filePath);
+                    bit = getResizedBitmap(bit,1024,1024);
+                    /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
+                }
+                break;
+            case RESULT_CANCELED:
+                finish();
+                break;
+        }
+
+        updatePager(bit,1);
+
+        SeekBar seekBar = findViewById(R.id.seekBarA);
+        seekBar.setOnSeekBarChangeListener(SeekBarListener);
+        //final String str = bitmapToString(bit);
+        Button button = (Button) findViewById(R.id.no_satisfied);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent myIntent2 = new Intent(PagerActivity.this, ShowResultActivity.class);
+                Intent myIntent = new Intent(PagerActivity.this, OptionSelectionActivity.class);
+                myIntent.putExtra("where","Pager");
+                Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bit, null,null));
+                myIntent.putExtra("bitmap",uri.toString());
                 startActivity(myIntent);
             }
-
-        }
+        });
+    }
 
 
 

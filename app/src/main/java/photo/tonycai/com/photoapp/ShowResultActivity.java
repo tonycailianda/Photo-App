@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,13 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import net.alhazmy13.imagefilter.ImageFilter;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ShowResultActivity extends AppCompatActivity {
     private int OptionSelectionActivity = 1;
@@ -63,6 +71,9 @@ public class ShowResultActivity extends AppCompatActivity {
         canvas.drawBitmap(tempBitmapR, rightRect, rightRectT, null);
         return bitmap;
     }
+
+
+
 
 
     /**
@@ -152,6 +163,7 @@ public class ShowResultActivity extends AppCompatActivity {
         return Bitmap.createBitmap(BitmapOrg, 0, 0, width, height, matrix, true);
     }
 
+
     /**
      * 图片反转
      *
@@ -190,7 +202,7 @@ public class ShowResultActivity extends AppCompatActivity {
 
     private void showImage() {
         Intent intent = getIntent();
-        byte[] pictureByte = intent.getByteArrayExtra("picByte");
+        Uri uri = Uri.parse(intent.getStringExtra("picByte"));
                 //intent.getStringExtra("picPath");
         Boolean filter_a_info = intent.getBooleanExtra("is_filter_a", true);
         Boolean filter_b_info = intent.getBooleanExtra("is_filter_b", true);
@@ -200,55 +212,68 @@ public class ShowResultActivity extends AppCompatActivity {
         Boolean filter_c_info = intent.getBooleanExtra("is_filter_c", true);
         int rotation_angle = intent.getIntExtra("rotation_angle", 6);
         //Bitmap imageSource = BitmapFactory.decodeFile(picturePath);
-        Bitmap imageSource = BitmapFactory.decodeByteArray(pictureByte, 0, pictureByte.length);
-        ImageFilters filters = new ImageFilters();
-        mAfterFilter = imageSource;
-        Bitmap afterSymmetry = imageSource;
-        if (filter_a_info == true)
-            mAfterFilter = filters.applyBlackFilter(mAfterFilter);
-        if (filter_b_info == true)
-            mAfterFilter = filters.applyHighlightEffect(mAfterFilter);
+        try {
+            Bitmap imageSource = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            ImageFilters filters = new ImageFilters();
+            mAfterFilter = imageSource;
+            Bitmap afterSymmetry = imageSource;
+            if (filter_a_info == true)
+                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.SKETCH);
+            if (filter_b_info == true)
+                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.HDR);
 
-        if (mAxis.equals("UP")) {
-            //mAfterFilter = reverseBitmap((RotateBitmap(mAfterFilter,180)),1);
-            mAfterFilter = mergeBitmap_TB(reverseBitmap(mAfterFilter,1),mAfterFilter,false);
-            //mAfterFilter = mergeBitmap_TB(mAfterFilter,flip(mAfterFilter, -1, 1),false);
-            //mAfterFilter = mergeBitmap_TB(mAfterFilter,reverseBitmap(mAfterFilter,1),false);
-        }
-        if (mAxis.equals("DOWN")) {
-            //mAfterFilter = flip(mAfterFilter, 1, -1);
-            //mAfterFilter = mergeBitmap_TB(mAfterFilter,flip(mAfterFilter, 1, -1),false);
-            mAfterFilter = mergeBitmap_TB(mAfterFilter,reverseBitmap(mAfterFilter,1),false);
-        }
-        if (mAxis.equals("LEFT")) {
-            mAfterFilter = RotateBitmap(mAfterFilter, 180);
-            mAfterFilter = mAfterFilter = mergeBitmap_LR(mAfterFilter,reverseBitmap(mAfterFilter,0),false);
-        }
-        if (mAxis.equals("RIGHT")) {
-            mAfterFilter = mergeBitmap_LR(reverseBitmap(mAfterFilter,0),mAfterFilter,false);
-        }
-        mAfterFilter = RotateBitmap(mAfterFilter, (rotation_angle) * 90);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageBitmap(mAfterFilter);
+            if(filter_c_info == true)
+                mAfterFilter = ImageFilter.applyFilter(mAfterFilter, ImageFilter.Filter.OLD);
 
-        Button yes = (Button) findViewById(R.id.yes_button);
-        Button no = (Button) findViewById(R.id.no_button);
-        final Bitmap finalAfterFilter = mAfterFilter;
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaStore.Images.Media.insertImage(getContentResolver(), finalAfterFilter, "title", "description");
-                Intent myIntent = new Intent(ShowResultActivity.this, AfterSaveActivity.class);
-                startActivityForResult(myIntent, AfterSaveActivity);
+            if (function_b_info==true)
+                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.INVERT);
+
+            if (function_c_info==true)
+                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.LIGHT,mAfterFilter.getWidth()/2,mAfterFilter.getHeight()/2,50);
+
+
+            if (mAxis.equals("UP")) {
+                //mAfterFilter = reverseBitmap((RotateBitmap(mAfterFilter,180)),1);
+                mAfterFilter = mergeBitmap_TB(reverseBitmap(mAfterFilter,1),mAfterFilter,false);
+                //mAfterFilter = mergeBitmap_TB(mAfterFilter,flip(mAfterFilter, -1, 1),false);
+                //mAfterFilter = mergeBitmap_TB(mAfterFilter,reverseBitmap(mAfterFilter,1),false);
             }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ShowResultActivity.this, OptionSelectionActivity.class);
-                startActivityForResult(myIntent, OptionSelectionActivity);
+            if (mAxis.equals("DOWN")) {
+                //mAfterFilter = flip(mAfterFilter, 1, -1);
+                //mAfterFilter = mergeBitmap_TB(mAfterFilter,flip(mAfterFilter, 1, -1),false);
+                mAfterFilter = mergeBitmap_TB(mAfterFilter,reverseBitmap(mAfterFilter,1),false);
             }
-        });
+            if (mAxis.equals("LEFT")) {
+                mAfterFilter = RotateBitmap(mAfterFilter, 180);
+                mAfterFilter = mAfterFilter = mergeBitmap_LR(mAfterFilter,reverseBitmap(mAfterFilter,0),false);
+            }
+            if (mAxis.equals("RIGHT")) {
+                mAfterFilter = mergeBitmap_LR(reverseBitmap(mAfterFilter,0),mAfterFilter,false);
+            }
+            mAfterFilter = RotateBitmap(mAfterFilter, (rotation_angle) * 90);
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(mAfterFilter);
+
+            Button yes = (Button) findViewById(R.id.yes_button);
+            Button no = (Button) findViewById(R.id.no_button);
+            final Bitmap finalAfterFilter = mAfterFilter;
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MediaStore.Images.Media.insertImage(getContentResolver(), finalAfterFilter, "title", "description");
+                    Intent myIntent = new Intent(ShowResultActivity.this, AfterSaveActivity.class);
+                    startActivityForResult(myIntent, AfterSaveActivity);
+                }
+            });
+            no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -270,7 +295,7 @@ public class ShowResultActivity extends AppCompatActivity {
 
         if (getIntent().getBooleanExtra("is_function_a", false)) {
             Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);
-            myIntent.putExtra("byteBit" , getIntent().getByteArrayExtra("picByte"));
+            myIntent.putExtra("byteBit" , getIntent().getStringExtra("picByte"));
             startActivityForResult(myIntent, SYMMETRY_ADJUSTMENT_ACTIVITY);
             //showImage();
         } else {
@@ -285,6 +310,5 @@ public class ShowResultActivity extends AppCompatActivity {
             mAxis = data.getStringExtra(SymmetryAdjustmentActivity.SYMMETRY_AXIS);
             showImage();
         }
-
     }
 }

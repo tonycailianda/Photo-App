@@ -16,10 +16,31 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class OptionSelectionActivity extends AppCompatActivity{
     private static int RESULT_LOAD_IMAGE = 1;
     private int ShowResultActivity = 1;
     int rotation_data= 0;
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +81,7 @@ public class OptionSelectionActivity extends AppCompatActivity{
                 myIntent.putExtra("is_function_b", sd.isChecked()); //Optional parameters
                 myIntent.putExtra("is_function_c", se.isChecked()); //Optional parameters
                 myIntent.putExtra("is_filter_c", sf.isChecked()); //Optional parameters
-                myIntent.putExtra("picByte", getIntent().getByteArrayExtra("bitmap")); //Optional parameters
+                myIntent.putExtra("picByte", getIntent().getStringExtra("bitmap")); //Optional parameters
                 myIntent.putExtra("rotation_angle", rotation_data); //Optional parameters
 
                 //Intent myIntent2 = new Intent(OptionSelectionActivity.this, SymmetryAdjustmentActivity.class);
