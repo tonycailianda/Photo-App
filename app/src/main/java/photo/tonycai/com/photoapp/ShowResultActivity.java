@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class ShowResultActivity extends AppCompatActivity {
     private int OptionSelectionActivity = 1;
@@ -216,20 +217,41 @@ public class ShowResultActivity extends AppCompatActivity {
             Bitmap imageSource = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             ImageFilters filters = new ImageFilters();
             mAfterFilter = imageSource;
+
+            HashMap<String, Integer> map = (HashMap<String, Integer>) getIntent().getSerializableExtra("param");
             Bitmap afterSymmetry = imageSource;
-            if (filter_a_info == true)
-                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.SKETCH);
-            if (filter_b_info == true)
-                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.HDR);
 
-            if(filter_c_info == true)
-                mAfterFilter = ImageFilter.applyFilter(mAfterFilter, ImageFilter.Filter.OLD);
+            if (map.containsKey("filter_a")) {
+                for (int i = 0; i < map.get("filter_a"); i ++) {
+                    mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.SKETCH);
+                }
+            }
 
-            if (function_b_info==true)
-                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.INVERT);
+            if (map.containsKey("filter_b")) {
+                for (int i = 0; i < map.get("filter_b"); i ++) {
+                    mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.HDR);
+                }
+            }
 
-            if (function_c_info==true)
-                mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.LIGHT,mAfterFilter.getWidth()/2,mAfterFilter.getHeight()/2,50);
+            if (map.containsKey("filter_c")) {
+                for (int i = 0; i < map.get("filter_c"); i ++) {
+                    mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.OLD);
+                }
+            }
+
+
+
+            if (map.containsKey("function_b")) {
+                for (int i = 0; i < map.get("function_b"); i ++) {
+                    mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.INVERT);
+                }
+            }
+
+            if (map.containsKey("function_c")) {
+                for (int i = 0; i < map.get("function_c"); i ++) {
+                    mAfterFilter = ImageFilter.applyFilter(mAfterFilter,ImageFilter.Filter.LIGHT,mAfterFilter.getWidth()/2,mAfterFilter.getHeight()/2,50);
+                }
+            }
 
 
             if (mAxis.equals("UP")) {
@@ -293,14 +315,26 @@ public class ShowResultActivity extends AppCompatActivity {
             }
         });
 
-        if (getIntent().getBooleanExtra("is_function_a", false)) {
-            Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);
-            myIntent.putExtra("byteBit" , getIntent().getStringExtra("picByte"));
-            startActivityForResult(myIntent, SYMMETRY_ADJUSTMENT_ACTIVITY);
-            //showImage();
-        } else {
+        HashMap<String, Integer> map = (HashMap<String, Integer>) getIntent().getSerializableExtra("param");
+
+        if (map.containsKey("function_a")) {
+                        Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);
+                        myIntent.putExtra("byteBit" , getIntent().getStringExtra("picByte"));
+                        startActivityForResult(myIntent, SYMMETRY_ADJUSTMENT_ACTIVITY);
+        }
+        else
+        {
             showImage();
         }
+
+//        if (getIntent().getBooleanExtra("is_function_a", false)) {
+//            Intent myIntent = new Intent(ShowResultActivity.this, SymmetryAdjustmentActivity.class);
+//            myIntent.putExtra("byteBit" , getIntent().getStringExtra("picByte"));
+//            startActivityForResult(myIntent, SYMMETRY_ADJUSTMENT_ACTIVITY);
+//            //showImage();
+//        } else {
+//            showImage();
+//        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
